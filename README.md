@@ -1,4 +1,4 @@
-#Sistem Pendukung Keputusan AHP: Penentuan Dosen Terbaik STMIK Primakara
+Sistem Pendukung Keputusan AHP: Penentuan Dosen Terbaik STMIK Primakara
 Sebuah aplikasi web sederhana yang mengimplementasikan metode Analytical Hierarchy Process (AHP) untuk membantu dalam pengambilan keputusan multi-kriteria dalam menentukan dosen terbaik di STMIK Primakara.
 
 Tentang Proyek
