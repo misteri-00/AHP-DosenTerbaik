@@ -6,36 +6,39 @@ Proyek ini adalah sistem pendukung keputusan berbasis web yang dirancang untuk m
 
 Tujuan utama dari sistem ini adalah menyediakan alat yang objektif dan terstruktur untuk mendukung pengambilan keputusan dalam proses penilaian dosen, memastikan konsistensi dalam penilaian.
 Teknologi yang Digunakan
+- HTML5: Struktur dasar halaman web.
+- Tailwind CSS: Untuk styling dan antarmuka pengguna yang responsif.
+- JavaScript: Logika inti untuk perhitungan AHP, manajemen data, interaksi UI, dan visualisasi.
 
-  HTML5: Struktur dasar halaman web.
-  •	Tailwind CSS: Untuk styling dan antarmuka pengguna yang responsif.
-  •	JavaScript: Logika inti untuk perhitungan AHP, manajemen data, interaksi UI, dan visualisasi.
-  Fitur
+Fitur
+  Setup Hierarki:
+    - Definisi tujuan keputusan (misal: "Menentukan Dosen Terbaik STMIK Primakara").
+    - Manajemen kriteria penilaian (tambah, edit, hapus kriteria seperti Pendidikan, Penelitian, Pengabdian Masyarakat, Kegiatan Penunjang).
+    - Manajemen alternatif (tambah, edit, hapus dosen sebagai alternatif).
+    - Fungsionalitas Ekspor dan Impor data hierarki (dalam format JSON).
   
-•	Setup Hierarki:
-  o	Definisi tujuan keputusan (misal: "Menentukan Dosen Terbaik STMIK Primakara").
-  o	Manajemen kriteria penilaian (tambah, edit, hapus kriteria seperti Pendidikan, Penelitian, Pengabdian Masyarakat, Kegiatan Penunjang).
-  o	Manajemen alternatif (tambah, edit, hapus dosen sebagai alternatif).
-  o	Fungsionalitas Ekspor dan Impor data hierarki (dalam format JSON).
-•	Matriks Kriteria:
-  o	Input perbandingan berpasangan untuk kriteria berdasarkan skala Saaty.
-  o	Perhitungan otomatis kebalikannya.
-  o	Menampilkan hasil konsistensi (λ Max, CI, CR) dan status konsistensi.
-•	Matriks Alternatif:
-  o	Generasi otomatis matriks perbandingan berpasangan untuk setiap alternatif di bawah setiap kriteria.
-  o	Input nilai perbandingan untuk setiap pasangan alternatif.
-  o	Perhitungan konsistensi untuk setiap matriks alternatif.
-•	Hasil & Ranking:
-  o	Menampilkan bobot prioritas kriteria.
-  o	Menampilkan ranking akhir dosen berdasarkan perhitungan AHP.
-  o	Visualisasi hasil dalam bentuk grafik (jika diimplementasikan dengan library chart seperti Chart.js atau D3.js).
-•	Kontrol Utama:
-  o	Tombol untuk memuat data default.
-  o	Tombol untuk menghitung AHP secara keseluruhan.
-  o	Tombol untuk mereset matriks.
-  o	Tombol untuk memvalidasi hierarki.
-•	Antarmuka Responsif: Dirancang dengan Tailwind CSS untuk tampilan yang baik di berbagai ukuran layar.
-Mulai Cepat (Ringkas)
+  Matriks Kriteria:
+    - Input perbandingan berpasangan untuk kriteria berdasarkan skala Saaty.
+    - Perhitungan otomatis kebalikannya.
+    - Menampilkan hasil konsistensi (λ Max, CI, CR) dan status konsistensi.
+  
+  Matriks Alternatif:
+    -Generasi otomatis matriks perbandingan berpasangan untuk setiap alternatif di bawah setiap kriteria.
+    -Input nilai perbandingan untuk setiap pasangan alternatif.
+    - Perhitungan konsistensi untuk setiap matriks alternatif.
+  
+  Hasil & Ranking:
+    - Menampilkan bobot prioritas kriteria.
+    - Menampilkan ranking akhir dosen berdasarkan perhitungan AHP.
+    - Visualisasi hasil dalam bentuk grafik (jika diimplementasikan dengan library chart seperti Chart.js atau D3.js).
+    
+  Kontrol Utama:
+    - Tombol untuk memuat data default.
+    - Tombol untuk menghitung AHP secara keseluruhan.
+    - Tombol untuk mereset matriks.
+    - Tombol untuk memvalidasi hierarki.
+
+Antarmuka Responsif: Dirancang dengan Tailwind CSS untuk tampilan yang baik di berbagai ukuran layar.
 
 Ikuti langkah-langkah ini untuk menjalankan aplikasi di lingkungan lokal Anda.
 Prasyarat
