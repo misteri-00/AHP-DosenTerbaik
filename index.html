@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHP - Sistem Penilaian Dosen Terbaik STMIK Primakara</title>    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'secondary': '#3b82f6',
+                        'accent': '#60a5fa'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex flex-col items-center">
+            <!-- UPGRIS Logo -->
+            <div class="mb-4 p-2 bg-white rounded-full shadow-lg">
+                <img src="https://fh.upgris.ac.id/wp-content/uploads/2020/05/cropped-logo-upgris1-6.png" alt="Universitas PGRI Semarang Logo" class="h-20 w-20 object-contain">
+            </div>
+            <h1 class="text-3xl font-bold text-center">Sistem Pendukung Keputusan AHP</h1>
+            <p class="text-center text-blue-100 mt-2">Penentuan Dosen Terbaik STMIK Primakara</p>
+        </div>
+    </header>    <!-- Navigation -->
+    <nav class="bg-white shadow-md border-b">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-center space-x-6">
+                <button id="tab-setup" class="tab-button px-4 py-2 rounded-lg font-medium transition-colors">
+                    Setup Hierarki
+                </button>
+                <button id="tab-criteria" class="tab-button active px-4 py-2 rounded-lg font-medium transition-colors">
+                    Matriks Kriteria
+                </button>
+                <button id="tab-alternatives" class="tab-button px-4 py-2 rounded-lg font-medium transition-colors">
+                    Matriks Alternatif
+                </button>
+                <button id="tab-results" class="tab-button px-4 py-2 rounded-lg font-medium transition-colors">
+                    Hasil & Ranking
+                </button>
+                <button id="tab-about" class="tab-button px-4 py-2 rounded-lg font-medium transition-colors">
+                    About
+                </button>
+            </div>
+        </div>
+    </nav>    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Control Panel -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button id="load-default-data" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    Muat Data Default
+                </button>
+                <button id="calculate-ahp" class="bg-primary hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    Hitung AHP
+                </button>
+                <button id="reset-matrices" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    Reset Matriks
+                </button>
+                <button id="validate-hierarchy" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    Validasi Hierarki
+                </button>
+            </div>
+        </div>
+
+        <!-- Setup Hierarchy Tab -->
+        <div id="setup-tab" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Goal Definition -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Definisi Tujuan dan Hierarki</h2>
+                    
+                    <div class="mb-6">
+                        <label for="goal-input" class="block text-sm font-medium text-gray-700 mb-2">Tujuan Keputusan:</label>
+                        <input type="text" id="goal-input" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" 
+                               value="Menentukan Dosen Terbaik STMIK Primakara"
+                               placeholder="Masukkan tujuan keputusan...">
+                    </div>
+
+                    <!-- Criteria Management -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Kriteria Penilaian</h3>
+                            <button id="add-criterion" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                + Tambah Kriteria
+                            </button>
+                        </div>
+                        
+                        <div id="criteria-list" class="space-y-2">
+                            <!-- Criteria items will be populated here -->
+                        </div>
+                        
+                        <div id="add-criterion-form" class="hidden mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex gap-3">
+                                <input type="text" id="new-criterion-input" 
+                                       class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                                       placeholder="Nama kriteria baru...">
+                                <button id="save-criterion" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Simpan
+                                </button>
+                                <button id="cancel-criterion" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternatives Management -->
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">Alternatif Pilihan</h3>
+                            <button id="add-alternative" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                + Tambah Alternatif
+                            </button>
+                        </div>
+                        
+                        <div id="alternatives-list" class="space-y-2">
+                            <!-- Alternative items will be populated here -->
+                        </div>
+                        
+                        <div id="add-alternative-form" class="hidden mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <div class="flex gap-3">
+                                <input type="text" id="new-alternative-input" 
+                                       class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+                                       placeholder="Nama alternatif baru...">
+                                <button id="save-alternative" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Simpan
+                                </button>
+                                <button id="cancel-alternative" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>                    <!-- Hierarchy Summary -->
+                    <div class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="font-semibold text-gray-800">Ringkasan Hierarki</h4>
+                            <div class="flex space-x-2">
+                                <button onclick="window.hierarchySetup?.exportHierarchy()" 
+                                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors">
+                                    Ekspor
+                                </button>
+                                <label class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors cursor-pointer">
+                                    Impor
+                                    <input type="file" accept=".json" class="hidden" 
+                                           onchange="if(this.files[0]) window.hierarchySetup?.importHierarchy(this.files[0])">
+                                </label>
+                            </div>
+                        </div>
+                        <div id="hierarchy-summary" class="text-sm text-gray-600">
+                            <!-- Summary will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Criteria Matrix Tab -->
+        <div id="criteria-tab" class="tab-content">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Matriks Perbandingan Berpasangan Kriteria</h2>
+                
+                <!-- Hierarchy Info -->
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+                    <h3 class="font-semibold text-blue-800">Tujuan: Menentukan Dosen Terbaik</h3>
+                    <div class="mt-2 text-sm text-blue-700">
+                        <p><strong>Kriteria:</strong></p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>K1: Pendidikan</li>
+                            <li>K2: Penelitian</li>
+                            <li>K3: Pengabdian Masyarakat</li>
+                            <li>K4: Kegiatan Penunjang</li>
+                        </ul>
+                        <p class="mt-2"><strong>Alternatif:</strong> Dosen A, Dosen B, Dosen C, Dosen D, Dosen E</p>
+                    </div>
+                </div>
+
+                <!-- Criteria Matrix -->
+                <div class="overflow-x-auto">
+                    <table id="criteria-matrix" class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 p-3 text-left font-semibold">Kriteria</th>
+                                <th class="border border-gray-300 p-3 text-center font-semibold">K1 (Pendidikan)</th>
+                                <th class="border border-gray-300 p-3 text-center font-semibold">K2 (Penelitian)</th>
+                                <th class="border border-gray-300 p-3 text-center font-semibold">K3 (Pengabdian Mas.)</th>
+                                <th class="border border-gray-300 p-3 text-center font-semibold">K4 (Kegiatan Penunjang)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 p-3 font-semibold bg-gray-50">K1</td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="0" data-col="0" value="1" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="0" data-col="1" min="1" max="9" step="0.001" value="3">
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="0" data-col="2" min="1" max="9" step="0.001" value="3">
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="0" data-col="3" min="1" max="9" step="0.001" value="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-3 font-semibold bg-gray-50">K2</td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="1" data-col="0" value="0.333" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="1" data-col="1" value="1" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="1" data-col="2" min="1" max="9" step="0.001" value="1">
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="1" data-col="3" min="1" max="9" step="0.001" value="3">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-3 font-semibold bg-gray-50">K3</td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="2" data-col="0" value="0.333" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="2" data-col="1" value="1" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="2" data-col="2" value="1" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="2" data-col="3" min="1" max="9" step="0.001" value="3">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 p-3 font-semibold bg-gray-50">K4</td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="3" data-col="0" value="0.2" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="3" data-col="1" value="0.333" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded bg-gray-100" 
+                                           data-row="3" data-col="2" value="0.333" readonly>
+                                </td>
+                                <td class="border border-gray-300 p-1">
+                                    <input type="number" class="matrix-input w-full p-2 text-center border rounded" 
+                                           data-row="3" data-col="3" value="1" readonly>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- AHP Scale Legend -->
+                <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                    <h4 class="font-semibold text-yellow-800 mb-2">Skala Perbandingan AHP (Saaty)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-yellow-700">
+                        <div>1 = Sama penting</div>
+                        <div>3 = Sedikit lebih penting</div>
+                        <div>5 = Lebih penting</div>
+                        <div>7 = Sangat lebih penting</div>
+                        <div>9 = Mutlak lebih penting</div>
+                        <div>2,4,6,8 = Nilai antara</div>
+                    </div>
+                </div>
+
+                <!-- Consistency Results -->
+                <div id="criteria-consistency" class="mt-6 p-4 border rounded-lg bg-gray-50 hidden">
+                    <h4 class="font-semibold text-gray-800 mb-2">Hasil Konsistensi Kriteria</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>λ Max: <span id="criteria-lambda" class="font-mono"></span></div>
+                        <div>CI: <span id="criteria-ci" class="font-mono"></span></div>
+                        <div>CR: <span id="criteria-cr" class="font-mono"></span></div>
+                    </div>
+                    <div id="criteria-consistency-status" class="mt-2 text-sm font-medium"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alternatives Matrix Tab -->
+        <div id="alternatives-tab" class="tab-content hidden">
+            <div class="space-y-8">
+                <!-- Alternative matrices will be generated for each criterion -->
+                <div id="alternative-matrices-container"></div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results-tab" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Priority Weights -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Bobot Prioritas Kriteria</h2>
+                    <div id="criteria-weights" class="overflow-x-auto">
+                        <!-- Priority weights table will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Final Rankings -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Ranking Akhir Dosen</h2>
+                    <div id="final-rankings" class="overflow-x-auto">
+                        <!-- Final rankings table will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Visualisasi Hasil</h2>
+                    <div id="visualization-container" class="flex justify-center">
+                        <!-- Charts will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="about-tab" class="tab-content hidden"></div>
+
+    </main>    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/matrix.js"></script>
+    <script src="js/ahp.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/hierarchy.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/about.js"></script>
+</body>
+</html>
