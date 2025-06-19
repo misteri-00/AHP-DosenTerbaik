@@ -6,7 +6,8 @@ Proyek ini adalah sistem pendukung keputusan berbasis web yang dirancang untuk m
 
 Tujuan utama dari sistem ini adalah menyediakan alat yang objektif dan terstruktur untuk mendukung pengambilan keputusan dalam proses penilaian dosen, memastikan konsistensi dalam penilaian.
 Teknologi yang Digunakan
-  •	HTML5: Struktur dasar halaman web.
+
+  HTML5: Struktur dasar halaman web.
   •	Tailwind CSS: Untuk styling dan antarmuka pengguna yang responsif.
   •	JavaScript: Logika inti untuk perhitungan AHP, manajemen data, interaksi UI, dan visualisasi.
   Fitur
